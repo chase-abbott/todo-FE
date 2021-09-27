@@ -10,7 +10,8 @@ export default function Auth() {
 
   if (loading) return <h1> Loading...</h1>;
 
-  if (error) return `Submission Failed ${error.message}`;
+  // need new determining factor for login error
+  // if (error) return `Submission Failed ${error.message}`;
 
   const handleToggle = () => {
     setIsLogin(prev => !prev);
@@ -19,6 +20,7 @@ export default function Auth() {
   const handleSubmit = (e) => {
     e.preventDefault();
     authenticate({ variables: { username, password } });
+    localStorage.setItem('token', data.login || data.signup);
   };
 
   return (
@@ -46,7 +48,7 @@ export default function Auth() {
         >
           {isLogin ? 'Log In' : 'Sign Up'}</button>
       </form>
-      <button onClick={handleToggle}>{isLogin ? 'Already have an account?' : 'Need to sign up?'}</button>
+      <button onClick={handleToggle}>{isLogin ? 'Need to sign up?' : 'Already have an account?'}</button>
     </div>
   );
 }
