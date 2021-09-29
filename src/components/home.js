@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_TODOS } from '../queries/todoQueries';
 import TodoList from './todoList';
 
 export default function Home(){
   const [todo, setTodo] = useState('');
+  const { data, loading, error } = useQuery(GET_TODOS);
 
-  // get all of user's todos from db via useEffect
+  if (loading) return <h1> Loading...</h1>;
+  if (error) return <h1> {error.message}</h1>;
 
   return (
     <div>
@@ -18,7 +22,10 @@ export default function Home(){
         {/* add todo to db */}
         <button className={buttonStyle}> Add Todo</button>
       </label>
-      <TodoList/>
+      {data
+        ? <TodoList todos={data.todos}/>
+        : null
+      }
     </div>
   );
 }

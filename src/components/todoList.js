@@ -1,18 +1,12 @@
 import React from 'react';
 import Todo from './todo';
 
-const data = [
-  { todo: 'Hi' },
-  { todo: 'Get a job' },
-  { todo: 'Get two jobs' }
-];
+export default function TodoList({ todos }){
 
-export default function TodoList(){
-
-  const listItems = data.map(item => {
+  const listItems = todos.map(item => {
     return (
       <li>
-        <Todo todo={item.todo}/>
+        <Todo todo={item.content} isCompleted={item.completed}/>
       </li>
     );
   });
