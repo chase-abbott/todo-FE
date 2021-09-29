@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
 import { useMutation } from '@apollo/client';
+import { useHistory } from 'react-router';
 
 export default function Auth() {
+  const history = useHistory();
   const { isLogin, setIsLogin, mutation } = useAuth();
   const [authenticate, { data, loading, error }] = useMutation(mutation);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    if (data) history.push('/home');
+  }, [data, history]);
+
   if (loading) return <h1> Loading...</h1>;
+
 
   // need new determining factor for login error
   // if (error) return `Submission Failed ${error.message}`;
@@ -20,7 +27,7 @@ export default function Auth() {
   const handleSubmit = (e) => {
     e.preventDefault();
     authenticate({ variables: { username, password } });
-    localStorage.setItem('token', data.login || data.signup);
+    // localStorage.setItem('token', data.login || data.signup);
   };
 
   return (
