@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LOGIN, SIGNUP } from '../queries/authQueries';
+import { LOGIN, SIGNUP } from '../mutations/authMutations';
 
 
 export default function useAuth(){
