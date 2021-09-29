@@ -16,7 +16,7 @@ dotenv.config();
 
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API,
-  credentials: 'same-origin'
+  // credentials: 'same-origin'
 });
 
 // taken from apollo docs
@@ -24,7 +24,7 @@ const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = localStorage.getItem('token');
   // return the headers to the context so httpLink can read them
-  console.log(headers);
+
   return {
     headers: {
       ...headers,
@@ -35,7 +35,7 @@ const authLink = setContext((_, { headers }) => {
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: authLink.concat(httpLink)
+  link: authLink.concat(httpLink),
 });
 
 

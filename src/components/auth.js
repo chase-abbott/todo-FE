@@ -11,10 +11,12 @@ export default function Auth() {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if (data) history.push('/home');
+    console.log(data);
+    if (data && data.login !== 'Incorrect Username or Password') {
+      localStorage.setItem('token', data?.login || data?.signup);
+      history.push('/home');
+    };
   }, [data, history]);
-
-  if (loading) return <h1> Loading...</h1>;
 
 
   // need new determining factor for login error
@@ -27,7 +29,7 @@ export default function Auth() {
   const handleSubmit = (e) => {
     e.preventDefault();
     authenticate({ variables: { username, password } });
-    // localStorage.setItem('token', data.login || data.signup);
+    
   };
 
   return (

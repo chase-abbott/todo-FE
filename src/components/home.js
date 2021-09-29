@@ -20,6 +20,7 @@ export default function Home(){
           value={todo}
           onChange={e => setTodo(e.target.value)}/>
         {/* add todo to db */}
+        {/* refetch */}
         <button className={buttonStyle}> Add Todo</button>
       </label>
       {data
