@@ -5,12 +5,14 @@ import './App.css';
 
 function App() {
   return (
+
     <div className="flex justify-center">
       <Switch>
         <Route path="/" exact component={Auth}/>
         <Route path='/home' exact component={Home}/>
       </Switch>
     </div>
+
   );
 }
 

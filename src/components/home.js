@@ -1,17 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-import { GET_TODOS } from '../queries/todoQueries';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router';
+import { useMutation, useQuery, useApolloClient } from '@apollo/client';
+import { GET_TODOS } from '../queries/todoQueries.js';
 import TodoList from './todoList';
+import { ADD_TODO } from '../mutations/todoMutations.js';
 
 export default function Home(){
+  const client = useApolloClient();
+  const history = useHistory();
   const [todo, setTodo] = useState('');
-  const { data, loading, error } = useQuery(GET_TODOS);
+  const { data, loading, error, refetch } = useQuery(GET_TODOS);
+  const [addTodo] = useMutation(ADD_TODO);
+
+  const handleAddTodo = () => {
+    // adds todo to db
+    addTodo({ variables: { content: todo } });
+
+    // refetches data to render
+    refetch();
+  };
+
+  const logout = () => {
+    client.clearStore();
+    history.push('/');
+  };
 
   if (loading) return <h1> Loading...</h1>;
   if (error) return <h1> {error.message}</h1>;
 
   return (
     <div>
+      <button 
+        className={buttonStyle}
+        onClick={logout}>
+        Logout </button>
       <label className={labelStyle}>
     Todo
         <input 
@@ -19,9 +41,10 @@ export default function Home(){
           type="text"
           value={todo}
           onChange={e => setTodo(e.target.value)}/>
-        {/* add todo to db */}
-        {/* refetch */}
-        <button className={buttonStyle}> Add Todo</button>
+        <button 
+          className={buttonStyle}
+          onClick={handleAddTodo}
+        > Add Todo</button>
       </label>
       {data
         ? <TodoList todos={data.todos}/>
